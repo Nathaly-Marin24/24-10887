@@ -1,0 +1,91 @@
+#incluir <vector>
+#incluir <cmath>
+#incluir <numeric>
+#incluir <algorithm>
+
+usando espacio_de_nombres estándar;
+
+// ─────────────────────────────────────────────
+// ESTADÍSTICAS
+// ─────────────────────────────────────────────
+
+doble significar(vector<doble> v) {
+    si (v.vacia()) devolver 0;
+    doble suma = 0;
+    para_cada (doble x : v) suma += x;
+    devolver suma / v.tamaño();
+}
+
+doble diferencia(vector<doble> v) {
+    si (v.tamaño() < 2) devolver 0;
+    doble m = significar(v);
+    doble suma_sq = 0;
+    para_cada (doble x : v) suma_sq += (x - m) * (x - m);
+    devolver raiz_cuadrada(suma_sq / v.tamaño());
+}
+
+doble Pearson_r(vector<doble> A, vector<doble> B) {
+    entero n = minimo(A.tamaño(), B.tamaño());
+    si (n == 0) devolver 0;
+
+    doble media_A = significar(A), media_B = significar(B);
+    doble num = 0, den_A = 0, den_B = 0;
+
+    para (entero i = 0; i < n; i++) {
+        doble da = A[i] - media_A;
+        doble db = B[i] - media_B;
+        num += da * db;
+        den_A += da * da;
+        den_B += db * db;
+    }
+
+    doble den = raiz_cuadrada(den_A * den_B);
+    si (den == 0) devolver 0;
+    devolver num / den;
+}
+
+// ─────────────────────────────────────────────
+// AUXILIARES INTERNAS
+// ─────────────────────────────────────────────
+
+vector<entero> dec_a_base(entero n, entero base) {
+    si (n == 0) devolver {0};
+    vector<entero> digitos;
+    mientras (n > 0) {
+        digitos.agregar(n % base);
+        n /= base;
+    }
+    invertir(digitos.inicio(), digitos.fin());
+    devolver digitos;
+}
+
+entero base_a_dec(vector<entero> s, entero base) {
+    entero resultado = 0;
+    para_cada (entero d : s) resultado = resultado * base + d;
+    devolver resultado;
+}
+
+// ─────────────────────────────────────────────
+// FUNCIONES REQUERIDAS
+// septapus = base 7 | octopus = base 8
+// pulpo = base 9 | hexakaidecapus = base 16
+// ─────────────────────────────────────────────
+
+vector<carbonizarse> dec_a_septapus(entero norte) { devolver dec_a_base(norte, 7); }
+vector<carbonizarse> dec_to_octopus(entero norte) { devolver dec_a_base(norte, 8); }
+vector<carbonizarse> dec_to_hexakaidecapus(entero norte) { devolver dec_a_base(norte, 16); }
+
+vector<carbonizarse> septapus_a_dec(vector<carbonizarse> s) { devolver { base_a_dec(s, 7) }; }
+vector<carbonizarse> pulpo_a_dec(vector<carbonizarse> s) { devolver { base_a_dec(s, 9) }; }
+vector<carbonizarse> hexakaidecapus_to_dec(vector<carbonizarse> s) { devolver { base_a_dec(s, 16) }; }
+
+vector<carbonizarse> septapus_a_pulpo(vector<carbonizarse> s) { devolver dec_a_base(base_a_dec(s, 7), 9); }
+vector<carbonizarse> septapo_a_hexakaidecapus(vector<carbonizarse> s) { devolver dec_a_base(base_a_dec(s, 7), 16); }
+vector<carbonizarse> octopus_a_septapos(vector<carbonizarse> s) { devolver dec_a_base(base_a_dec(s, 8), 7); }
+vector<carbonizarse> pulpo_a_hexakaidecapus(vector<carbonizarse> s) { devolver dec_a_base(base_a_dec(s, 9), 16); }
+vector<carbonizarse> hexakaidecapus_a_septapus(vector<carbonizarse> s) { devolver dec_a_base(base_a_dec(s, 16), 7); }
+vector<carbonizarse> hexakaidecapus_a_pulpo(vector<carbonizarse> s) { devolver dec_a_base(base_a_dec(s, 16), 9); }
+
+entero principal() {
+    devolver 0;
+}
