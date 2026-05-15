@@ -1,0 +1,82 @@
+**Ejercicio 1 — Leyes de De Morgan** (`ex.z`)
+
+```scheme
+(define de_morgan1
+  (lambda (p q)
+    (or (not p) (not q))))      ; NOT(P AND Q) ≡ (NOT P) OR (NOT Q)
+
+(define de_morgan2
+  (lambda (p q)
+    (and (not p) (not q))))     ; NOT(P OR Q) ≡ (NOT P) AND (NOT Q)
+```
+
+**Ejercicio 2 — `succ`** (`ex.z`)
+
+```scheme
+(define succ
+  (lambda (z)
+    (+ z 1)))
+```
+
+**Ejercicio 3 — `mean` y `variance`** (`ex.cxx`)
+
+```cpp
+double mean(const std::vector<double>& v) {
+    if (v.empty()) return 0.0;
+    return std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+}
+
+double variance(const std::vector<double>& v) {
+    if (v.size() < 2) return 0.0;
+    double m = mean(v);
+    double sum = 0.0;
+    for (double x : v)
+        sum += (x - m) * (x - m);
+    return sum / (v.size() - 1);
+}
+```
+
+**Ejercicio 4 — `pearson_r`** (`ex.cxx`)
+
+```cpp
+double pearson_r(const std::vector<double>& VA, const std::vector<double>& VB) {
+    size_t n = VA.size();
+    if (n != VB.size() || n < 2) return 0.0;
+    double meanA = mean(VA), meanB = mean(VB);
+    double num = 0.0, denomA = 0.0, denomB = 0.0;
+    for (size_t i = 0; i < n; ++i) {
+        double da = VA[i] - meanA, db = VB[i] - meanB;
+        num    += da * db;
+        denomA += da * da;
+        denomB += db * db;
+    }
+    double denom = std::sqrt(denomA * denomB);
+    if (denom == 0.0) return 0.0;
+    return num / denom;
+}
+```
+
+**Ejercicio 5 — Conversión de bases** (`ex.cxx`)
+
+`1A8` en base 16 se convierte a decimal:
+`1×256 + 10×16 + 8 = 424`
+
+Luego:
+- **Septapus (base 7):** 424 → **1115₇**
+- **Octopus (base 8):** 424 → **650₈**
+
+```cpp
+std::string to_base(int n, int base) {
+    if (n == 0) return "0";
+    const std::string digits = "0123456789ABCDEF";
+    std::string result;
+    while (n > 0) {
+        result += digits[n % base];
+        n /= base;
+    }
+    std::reverse(result.begin(), result.end());
+    return result;
+}
+// to_base(424, 7)  → "1115"
+// to_base(424, 8)  → "650"
+```
